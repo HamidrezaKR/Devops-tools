@@ -10,3 +10,32 @@ Visit the following resources to learn more:
 - [Ansible Getting Started Guide](https://www.ansible.com/resources/get-started)
 - [Ansible Full Course for Beginners](https://www.youtube.com/watch?v=9Ua2b06oAr4)
 
+
+- **system Requirements**
+    - Control Node:
+        - Python2.7 or Python3.5+
+        - SSH
+    - Managed Nodes:
+        - Python 2.6+ or Python3.5+
+        - SSH
+
+- **Setup and Configuration**
+    - Method1: pip
+        
+        ```bash
+        apt install -y python3-pip  python3-venv
+        python -m venv <env-name>
+        source <env-name>/bin/activate
+        #update pip
+        pip install -U pip 
+        pip install ansible
+        ```
+        
+    - Method2: apt
+        
+        ```bash
+        apt install -y software-properties-common
+        apt-add-repository --yes --update ppa:ansible/ansible
+        apt install -y ansible
+        ```
+        
