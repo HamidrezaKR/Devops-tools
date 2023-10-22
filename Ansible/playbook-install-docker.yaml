@@ -1,0 +1,52 @@
+---
+  - hosts: kuber_workers
+    vars:
+      docker_packages_to_remove:
+        - docker-doc
+        - docker.io
+        - docker-compose
+        - podman-docker
+        - containerd
+        - runc
+
+      docker_prerequired_packages_to_install:
+        - ca-certificates
+        - curl
+        - gnupg
+
+      docker_package_to_install:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+
+    tasks:
+
+      - name: update pakage cache
+        apt:
+          update_cache: yes
+
+      - name: uninstall old docker packages
+        apt:
+          name: "{{ docker_packages_to_remove }}"
+          state: absent
+
+      - name: install docker prerequired package
+        apt:
+          name: "{{ docker_prerequired_packages_to_install }}"
+          state: present
+
+      - name: install docker apt repository key
+        apt_key:
+          url: https://download.docker.com/linux/debian/gpg
+
+      - name: add docker apt repository
+        apt_repository:
+          repo: deb [arch="{{ "amd64" if ansible_facts['architecture']  == "x86_64" else "i386" }}" ]  https://download.docker.com/linux/debian {{ ansible_facts['lsb']['codename'] }}  stable
+
+      - name: install docker
+        apt:
+          update_cache: yes
+          name: "{{ docker_package_to_install}}"
+          state: present
