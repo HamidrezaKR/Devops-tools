@@ -22,6 +22,14 @@
         - docker-compose-plugin
 
     tasks:
+      - name: check docker installed
+        shell: "which docker"
+        ignore_errors: yes
+        register: result
+
+      - name: exit if docker exist
+        meta: end_host
+        when: result.rc == 0
 
       - name: update pakage cache
         apt:
